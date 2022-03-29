@@ -1,6 +1,8 @@
-const selections = ['rock', 'paper', 'scissor']
+const selections = ['rock', 'paper', 'scissor'] 
+
 let playerScore = 0;
 let computerScore = 0;
+
 //Intialize computer choice
 function computerPlay() {
     return selections[Math.floor(Math.random()*selections.length)];
@@ -8,14 +10,17 @@ function computerPlay() {
 
 //Compare computer selection with player
 function playRound(playerSelection, computerSelection) {
+    if (playerScore == 5)  { return 'Player win 5!'}
+    if (computerScore == 5) { return 'Computer win 5!'}
+    
     if (playerSelection != computerSelection) {
         if (playerSelection == 'rock') {
             if (computerSelection == 'scissor') {
                 playerScore += 1;
-                return 'player win!';
+                return  'player win!';
             } else { 
                 computerScore += 1;
-                return 'computer win!';
+                return  'computer win!';
             }
         }
         else if (playerSelection == 'paper') {
@@ -30,7 +35,7 @@ function playRound(playerSelection, computerSelection) {
         else if (playerSelection == 'scissor') {
             if (computerSelection == 'paper') {
                 playerScore += 1;
-                return 'player win';
+                return  'player win';
             } else {
                 computerScore += 1;
                 return 'computer win!'
@@ -39,23 +44,27 @@ function playRound(playerSelection, computerSelection) {
         } else {
             computerScore += 1;
             playerScore += 1;
-            return 'draw!';
+            return  'draw!';
         }
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt('What is your choice?');
-        const computerSelection = computerPlay();
-        console.log(playRound(playerSelection, computerSelection));
-    } 
-    scoreboard();
-} 
+const div = document.createElement('div')
+const buttons = document.querySelectorAll('button')
+const resetgame = document.createElement('button')
+const body = document.body
 
-function scoreboard() {
-    if (computerScore < playerScore) {console.log('Player win 5!')}
-    else if (computerScore > playerScore) {console.log('Computer win 5 !')}
-    else {console.log('It\' a tie!')}
-}
+resetgame.textContent = 'play again?'
+resetgame.addEventListener('click', () => {
+    playerScore = 0;
+    computerScore = 0;
+    div.textContent = '';
+})
 
-game();
+buttons.forEach((button) => {
+    button.addEventListener('click', () =>{ 
+        div.textContent = playRound(button.id, computerPlay());
+    })
+});   
+
+body.append(div)
+body.append(resetgame)
